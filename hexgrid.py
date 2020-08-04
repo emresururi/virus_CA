@@ -1,4 +1,4 @@
-import numpy as np
+from VirusCell import *
 
 
 class hexgrid:
@@ -19,7 +19,8 @@ class hexgrid:
         self.nx, self.ny = nx, ny
         self.origin = origin
         self.c_i = self.c_j = 0
-        self.maze_map = np.empty((nx, ny), dtype=object)
+        self.maze_map = np.empty((ny, nx), dtype=object)
+        self.neighbours = np.empty((ny, nx), dtype=object)
         self.flag_tl = 0
         if self.origin == "tl":
             self.flag_tl = 1
@@ -37,6 +38,13 @@ class hexgrid:
                 self.c_i = center_origin[0]
                 self.c_j = center_origin[1]
 
+        # Initialize cells:
+        for i in range(self.ny):
+            for j in range(self.nx):
+                self.maze_map[i, j] = VirusCell((i + j) % 2)
+                # Neighbours
+                self.neighbours[i, j] = 5
+
     def __xy2ij(self, x, y):
         # returns the row-col [i,j] equivalent of (x,y)
         i = self.flag_tl * x + (1 - self.flag_tl) * (self.c_i - y)
@@ -48,10 +56,13 @@ class hexgrid:
         x = self.flag_tl * i + (1 - self.flag_tl) * (j - self.c_j)
         y = self.flag_tl * j + (1 - self.flag_tl) * (self.c_i - i)
         return [x, y]
-    def xy2ij(self,x,y):
-        return self.__xy2ij(x,y)
-    def ij2xy(self,x,y):
-        return self.__ij2xy(x,y)
+
+    def xy2ij(self, xy):
+        return self.__xy2ij(xy[0], xy[1])
+
+    def ij2xy(self, ij):
+        return self.__ij2xy(ij[0], ij[1])
+
     def get_xy(self, x, y):
         [i, j] = self.__xy2ij(x, y)
         return self.maze_map[i, j]
@@ -60,8 +71,8 @@ class hexgrid:
         # Fills the cell at location x,y with object obj
         self.maze_map[x, y] = obj
 
-    def neighbours(self, x, y):
-        nlist = [[x - 1, y - 1], [x - 1, y], [x, y - 1], [x, y + 1], [x + 1, y], [x + 1, y + 1]]
+    def calc_neighbours(self, i, j):
+        nlist = [[i - 1, j - 1], [i - 1, j], [i, j - 1], [i, j + 1], [i + 1, j], [i + 1, j + 1]]
         """
         nlist.append([x - 1, y - 1])
         nlist.append([x - 1, y])
@@ -71,4 +82,7 @@ class hexgrid:
         nlist.append([x + 1, y + 1])
         """
         nlist = np.array(nlist)
+        filt = np.logical_and(np.logical_and(nlist[:, 0] >= 0, nlist[:, 1] >= 0),
+                              np.logical_and(nlist[:, 0] < self.ny, nlist[:, 1] < self.nx))
+        nlist = nlist[filt]
         return nlist

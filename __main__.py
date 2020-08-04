@@ -1,5 +1,5 @@
 from hexgrid import *
 
-grid = hexgrid(10, 5, "tl")
+grid = hexgrid(4, 3, "br")
 
-a=grid.neighbours(1,1)
+#a=grid.neighbours(1,1)
