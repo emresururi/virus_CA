@@ -1,14 +1,14 @@
 from VirusCell import *
 
 
-class hexgrid:
+class HexGrid:
     def __init__(self, nx, ny, origin="tl", center_origin=()):
         """Initialize the hex grid.
         The grid contains nx columns and ny rows
         and origin can be assigned to one of:
             * "center"
             * "tl" - Top left
-            * "br" - Bottom right
+            * "bl" - Bottom left
         cells.
         % optional 'center_origin' parameter specifies
              the (row-col) position of the center. If it is omitted,
@@ -24,7 +24,7 @@ class hexgrid:
         self.flag_tl = 0
         if self.origin == "tl":
             self.flag_tl = 1
-        elif self.origin == "br":
+        elif self.origin == "bl":
             self.c_i = self.ny - 1
             self.c_j = 0
         else:
@@ -43,7 +43,7 @@ class hexgrid:
             for j in range(self.nx):
                 self.maze_map[i, j] = VirusCell((i + j) % 2)
                 # Neighbours
-                self.neighbours[i, j] = 5
+                self.neighbours[i, j] = self.calc_neighbours(i, j)
 
     def __xy2ij(self, x, y):
         # returns the row-col [i,j] equivalent of (x,y)
@@ -69,7 +69,8 @@ class hexgrid:
 
     def set_cell_xy(self, x, y, obj):
         # Fills the cell at location x,y with object obj
-        self.maze_map[x, y] = obj
+        [i, j] = self.__xy2ij(x, y)
+        self.maze_map[i, j] = obj
 
     def calc_neighbours(self, i, j):
         nlist = [[i - 1, j - 1], [i - 1, j], [i, j - 1], [i, j + 1], [i + 1, j], [i + 1, j + 1]]
@@ -86,3 +87,9 @@ class hexgrid:
                               np.logical_and(nlist[:, 0] < self.ny, nlist[:, 1] < self.nx))
         nlist = nlist[filt]
         return nlist
+
+    def get_neighbours(self, x, y):
+        [i, j] = self.__xy2ij(x, y)
+        return list(map(self.ij2xy, self.neighbours[i, j]))
+
+    # TODO: Draw (export to SVG) or visualization method
