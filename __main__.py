@@ -1,7 +1,7 @@
 from HexGrid import *
 
 # Create a "bottom-left" origin, 4-cell wide x 3-cell high grid
-grid_bl = HexGrid(4, 3, "bl")
+grid_bl = HexGrid(4, 4, "bl")
 
 # List the neighbours of the cell at <1,1>
 # (since this is a 'bl' grid, it is the "up 1, right one" to the origin
@@ -27,3 +27,5 @@ for i in range(3):
         x = xy[0]
         y = xy[1]
         print("{:d},{:d}: {:d}".format(x, y, grid_bl.get_xy(x, y).state))
+
+grid_bl.visualize()
