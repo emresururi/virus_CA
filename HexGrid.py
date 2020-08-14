@@ -1,5 +1,6 @@
-from VirusCell import *
 import pygame as pg
+
+from VirusCell import *
 
 
 class HexGrid:
@@ -107,21 +108,20 @@ class HexGrid:
         border_thickness = 8
 
         # To -optionally- add spaces between the hexagons
-        max_nx_ny = self.ny + self.nx/2
-        max_ny_nx = self.nx + self.ny/2
-        max_nxy = np.max((max_nx_ny,max_ny_nx))
+        max_nx_ny = self.ny + self.nx / 2
+        # max_ny_nx = self.nx + self.ny / 2
+        # max_nxy = np.max((max_nx_ny,max_ny_nx))
         r = int(res_x / max_nx_ny / 2)
         print(r)
         # r = 48.0
-        r_sqrt_3_half = r*np.sqrt(3)/2
+        r_sqrt_3_half = r * np.sqrt(3) / 2
         hex_distance = 5
         r0 = r - hex_distance
 
         # Position of the [0,0] row-col hex center
-        x_cent = int(3*r/2)
-        y_cent = (self.nx+1)*r_sqrt_3_half
+        x_cent = int(3 * r / 2)
+        y_cent = (self.nx + 1) * r_sqrt_3_half
         print(y_cent)
-
 
         vec_a = (np.array([0, 1]) * np.sqrt(3) * r).astype(int)
         vec_b = (np.array([3, -np.sqrt(3)]) * r / 2).astype(int)
@@ -139,3 +139,5 @@ class HexGrid:
                 pg.draw.polygon(disp, color_border, hex_points + [x_cent, y_cent] + i * vec_a + j * vec_b)
 
         pg.display.flip()
+        while pg.event.wait().type != pg.QUIT:
+            pass
