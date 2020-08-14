@@ -97,7 +97,8 @@ class HexGrid:
     # TODO: Draw (export to SVG) or visualization method
     def visualize(self):
         # Visualizes the grid using PyGame
-        pg.init()
+        # pg.init()
+        pg.display.init()
         clock = pg.time.Clock()
         clock.tick(30)
 
@@ -105,22 +106,24 @@ class HexGrid:
         disp = pg.display.set_mode((res_x, res_y))
         pg.display.set_caption("HexGrid")
         color_border = pg.Color('purple')
+        colors = ("purple", "yellow", "blue", "red", "green", "brown", "orange")
         border_thickness = 8
 
         # To -optionally- add spaces between the hexagons
-        max_nx_ny = self.ny + self.nx / 2
-        # max_ny_nx = self.nx + self.ny / 2
-        # max_nxy = np.max((max_nx_ny,max_ny_nx))
-        r = int(res_x / max_nx_ny / 2)
+        rx = res_x / (self.nx + 1 + np.ceil((self.nx + 1) / 2))
+        ry = res_y / (2 * (self.ny + 1))
+        print(rx, ry)
+        r = np.min((rx, ry))
         print(r)
-        # r = 48.0
+        # r = int(res_x / max_nx_ny / 2)
         r_sqrt_3_half = r * np.sqrt(3) / 2
-        hex_distance = 5
+        hex_distance = 2
         r0 = r - hex_distance
 
         # Position of the [0,0] row-col hex center
-        x_cent = int(3 * r / 2)
-        y_cent = (self.nx + 1) * r_sqrt_3_half
+        x_translation = 0.75 * ((self.nx + 1) % 2) + 1 * (self.nx % 2)
+        x_cent = int(x_translation * r + (res_x - (self.nx + np.ceil(self.nx / 2)) * r) / 2)
+        y_cent = int(1.5 * r_sqrt_3_half + (res_y - self.ny * 2 * r_sqrt_3_half) / 2)
         print(y_cent)
 
         vec_a = (np.array([0, 1]) * np.sqrt(3) * r).astype(int)
@@ -136,8 +139,8 @@ class HexGrid:
 
         for i in range(self.ny):
             for j in range(self.nx):
-                pg.draw.polygon(disp, color_border, hex_points + [x_cent, y_cent] + i * vec_a + j * vec_b)
-
+                pg.draw.polygon(disp, pg.Color(colors[self.maze_map[i, j].state]),
+                                hex_points + [x_cent, y_cent] + (i + (np.floor(j / 2))) * vec_a + j * vec_b)
         pg.display.flip()
         while pg.event.wait().type != pg.QUIT:
             pass

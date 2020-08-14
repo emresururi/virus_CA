@@ -1,21 +1,22 @@
 from HexGrid import *
 
-# Create a "bottom-left" origin, 4-cell wide x 3-cell high grid
-grid_bl = HexGrid(4, 4, "bl")
+# Create a "bottom-left" origin, 15-cell wide x 10-cell high grid
+grid_bl = HexGrid(15, 10, "bl")
 
 # List the neighbours of the cell at <1,1>
 # (since this is a 'bl' grid, it is the "up 1, right one" to the origin
 # at the bottom-left)
+print("Here are the list of neighbours of <1,1>:")
 print(grid_bl.get_neighbours(1, 1))
 
 # Get its state:
-print(grid_bl.get_xy(1, 1).state)
+print("The state of the <1,1> cell is: {:}".format(grid_bl.get_xy(1, 1).state))
 
 # Set its state:
 grid_bl.get_xy(1, 1).state = 5
-print(grid_bl.get_xy(1, 1).state)
+print("After the update, the state of the <1,1> cell is now: {:}".format(grid_bl.get_xy(1, 1).state))
 
-# Set its neighbours states:
+# Set its neighbours' states:
 for xy in grid_bl.get_neighbours(1, 1):
     #print(xy)
     grid_bl.get_xy(xy[0], xy[1]).state = 4
