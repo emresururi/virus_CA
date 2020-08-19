@@ -67,6 +67,9 @@ class HexGrid:
 
     def __ij2qr(self,i,j):
         # to efficiently store the cells, we need a internal mapping
+        q = i - int(np.floor(j/2))
+        r = j
+        return [q,r]
 
     def xy2ij(self, xy):
         return self.__xy2ij(xy[0], xy[1])
