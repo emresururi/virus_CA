@@ -1,7 +1,7 @@
 from HexGrid import *
 
 # Create a "bottom-left" origin, 15-cell wide x 10-cell high grid
-grid_bl = HexGrid(15, 10, "bl")
+grid_bl = HexGrid(7, 6, "bl")
 
 # List the neighbours of the cell at <1,1>
 # (since this is a 'bl' grid, it is the "up 1, right one" to the origin
