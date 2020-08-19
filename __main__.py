@@ -29,4 +29,6 @@ for i in range(3):
         y = xy[1]
         print("{:d},{:d}: {:d}".format(x, y, grid_bl.get_xy(x, y).state))
 
+grid_bl.get_xy(3,1).state = 6
+
 grid_bl.visualize()
