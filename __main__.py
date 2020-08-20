@@ -34,4 +34,6 @@ for x in grid_bl.range_x:
         print("{:d},{:d}: {:d}".format(x, y, grid_bl.get_xy(x, y).state), end=" | ")
     print("")
 
+grid_bl.get_xy(3,1).state = 6
+
 grid_bl.visualize()
