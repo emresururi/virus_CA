@@ -31,7 +31,7 @@ class HexGrid:
         elif self.origin == "bl":
             self.c_i = self.ny - 1
             self.c_j = 0
-            self.c_x , self.c_y = self.ij2xy((self.c_i,self.c_j))
+            self.c_x, self.c_y = self.ij2xy((self.c_i, self.c_j))
         else:
             # center
             if not center_origin:
@@ -56,26 +56,35 @@ class HexGrid:
     def __xy2ij(self, x, y):
         # returns the row-col [i,j] equivalent of (x,y)
         j = self.flag_tl * y + (1 - self.flag_tl) * (x + self.c_x)
-        i = self.flag_tl * x + (1 - self.flag_tl) * (-y + self.ny_m1 + int(np.floor(j/2)) - self.c_y)
+        int_np_floor_j_over_2 = int(np.floor(j / 2))
+        i = self.flag_tl * (x + int_np_floor_j_over_2) + (1 - self.flag_tl) * (
+                    -y + self.ny_m1 + int_np_floor_j_over_2 - self.c_y)
         return [i, j]
 
     def __ij2xy(self, i, j):
         # returns the corresponding (x,y) equivalent of row-col [i,j]
-        x = self.flag_tl * i + (1 - self.flag_tl)  * (j - self.c_x)
-        y = self.flag_tl * j + (1 - self.flag_tl) * (int(self.ny_m1 - i + np.floor(j/2)) - self.c_y)
+        int_np_floor_j_over_2 = int(np.floor(j / 2))
+        x = self.flag_tl * (i - int_np_floor_j_over_2) + (1 - self.flag_tl) * (j - self.c_x)
+        y = self.flag_tl * j + (1 - self.flag_tl) * (self.ny_m1 - i + int_np_floor_j_over_2 - self.c_y)
         return [x, y]
 
-    def __ij2qr(self,i,j):
+    def __ij2qr(self, i, j):
         # to efficiently store the cells, we need a internal mapping
-        q = i - int(np.floor(j/2))
+        q = i - int(np.floor(j / 2))
         r = j
-        return [q,r]
+        return [q, r]
 
     def xy2ij(self, xy):
         return self.__xy2ij(xy[0], xy[1])
 
     def ij2xy(self, ij):
         return self.__ij2xy(ij[0], ij[1])
+
+    def ij2qr(self, ij):
+        return self.__ij2qr(ij[0], ij[1])
+
+    def xy2qr(self, xy):
+        return self.ij2qr(self.xy2ij(xy))
 
     def get_xy(self, x, y):
         [i, j] = self.__xy2ij(x, y)
