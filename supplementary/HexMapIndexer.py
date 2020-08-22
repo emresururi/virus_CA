@@ -2,8 +2,14 @@ from pathlib import Path
 
 from HexGrid import *
 
+""" A supplementary code to generate a map (in SVG format) 
+of the different indexes that can be used to refer to the cells.
+
+The grid contained in str_header is prepared using xfig.
+"""
+
 fname = Path("supplementary/hex.svg")
-print(fname)
+print(fname.absolute())
 str_header = '''<?xml version="1.0" standalone="no"?>
 <!-- Creator: fig2dev Version 3.2.7a -->
 <!-- CreationDate: 2020-08-21 11:16:20 -->
@@ -390,14 +396,19 @@ with open(fname, 'w') as writer:
 
             x = 2275 + j * 900
             # <g transform="translate(2340,3600) rotate(-60)" >
-            string = '<g transform="translate({:},{:}) rotate(-60)" >\n<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">{:2d},{:2d}</text>\n</g><!-- Text -->'.format(
-                x, y, i, j)
-            string_ij = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" fill="blue" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">{:2d},{:2d}</text>\n</g><!-- Text -->'.format(
-                x + 200, y - 80, ii, jj)
-            string_bl = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" fill="purple" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">{:2d},{:2d}</text>\n</g><!-- Text -->'.format(
-                x + 200, y + 140, bl_x, bl_y)
-            string_cent = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" fill="red" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">{:2d},{:2d}</text>\n</g><!-- Text -->'.format(
-                x + 200, y + 360, cent_x, cent_y)
+            string = '<g transform="translate({:},{:}) rotate(-60)" >\n<text xml:space="preserve" x="0" y="0" '\
+                     'fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" '\
+                     'text-anchor="start">{:2d},{:2d}</text>\n</g><!-- Text -->'.format(x, y, i, j)
+            string_ij = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" '\
+                        'fill="blue" font-family="Times" font-style="normal" font-weight="normal" font-size="192" '\
+                        'text-anchor="start">{:2d},{:2d}</text>\n</g><!-- Text -->'.format(x + 200, y - 80, ii, jj)
+            string_bl = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" '\
+                        'fill="purple" font-family="Times" font-style="normal" font-weight="normal" font-size="192" '\
+                        'text-anchor="start">{:2d},{:2d}</text>\n</g><!-- Text -->'.format(x + 200, y + 140, bl_x, bl_y)
+            string_cent = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" '\
+                          'fill="red" font-family="Times" font-style="normal" font-weight="normal" font-size="192" '\
+                          'text-anchor="start">{:2d},{:2d}</text>\n</g><!-- Text -->'.format(x + 200,
+                                                                                             y + 360, cent_x, cent_y)
             writer.write(string)
             writer.write(string_ij)
             writer.write(string_bl)
@@ -406,17 +417,108 @@ with open(fname, 'w') as writer:
             ii, jj = hex6.qr2ij((i, j + 1))
             bl_x, bl_y = bl.qr2xy((i, j + 1))
             cent_x, cent_y = cent.qr2xy((i, j + 1))
-            string = '<g transform="translate({:},{:}) rotate(-60)" >\n<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">{:},{:}</text>\n</g><!-- Text -->'.format(
-                x + 900, y - 540, i, j + 1)
-            string_ij = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" fill="blue" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">{:},{:}</text>\n</g><!-- Text -->'.format(
-                x + 1100, y - 620, ii, jj)
-            string_bl = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" fill="purple" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">{:},{:}</text>\n</g><!-- Text -->'.format(
-                x + 1100, y - 400, bl_x, bl_y)
-            string_cent = '<g transform="translate({:2d},{:2d}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" fill="red" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">{:},{:}</text>\n</g><!-- Text -->'.format(
-                x + 1100, y - 180, cent_x, cent_y)
+            string = '<g transform="translate({:},{:}) rotate(-60)" >\n<text xml:space="preserve" x="0" y="0" '\
+                     'fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" '\
+                     'text-anchor="start">{:},{:}</text>\n</g><!-- Text -->'.format(x + 900, y - 540, i, j + 1)
+            string_ij = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" '\
+                        'fill="blue" font-family="Times" font-style="normal" font-weight="normal" font-size="192" '\
+                        'text-anchor="start">{:},{:}</text>\n</g><!-- Text -->'.format(x + 1100, y - 620, ii, jj)
+            string_bl = '<g transform="translate({:},{:}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" '\
+                        'fill="purple" font-family="Times" font-style="normal" font-weight="normal" font-size="192" '\
+                        'text-anchor="start">{:},{:}</text>\n</g><!-- Text -->'.format(x + 1100, y - 400, bl_x, bl_y)
+            string_cent = '<g transform="translate({:2d},{:2d}) rotate(0)" >\n<text xml:space="preserve" x="0" y="0" '\
+                          'fill="red" font-family="Times" font-style="normal" font-weight="normal" font-size="192" '\
+                          'text-anchor="start">{:},{:}</text>\n</g><!-- Text -->'.format(x + 1100,
+                                                                                         y - 180, cent_x, cent_y)
             writer.write(string)
             writer.write(string_ij)
             writer.write(string_bl)
             writer.write(string_cent)
 
+    delta_l1 = 595
+    delta_l2 = 1192
+    delta_x = 298
+    delta_y = 515
+    x0, y0 = 2326, 2121
+    line_color = 'purple'
+    stroke_width = 90
+    string = '<line x1="{:}" y1="{:}" x2="{:}" y2="{:}" style="stroke:{:};stroke-width:{:}" />\n'
+    for y0 in (2121, 1030 * 8):
+        for i in range(3):
+            x1 = x0 + i * (delta_l1 + delta_l2)
+            y1 = y0
+            x2 = x1 + delta_l1
+            y2 = y1
+            writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
+
+            x1 = x2
+            y1 = y2
+            x2 = x1 + delta_x
+            y2 = y1 - delta_y
+            writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
+
+            x1 = x2
+            y1 = y2
+            x2 = x1 + delta_l1
+            y2 = y1
+            writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
+
+            x1 = x2
+            y1 = y2
+            x2 = x1 + delta_x
+            y2 = y1 + delta_y
+            writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
+        x1 = x2
+        y1 = y2
+        x2 = x1 + delta_l1
+        y2 = y1
+        writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
+    x0, y0 = 2326, 2121
+    sign = 1
+    for x0 in (2326, 1192 * 7):
+        sign *= -1
+        for i in range(6):
+            x1 = x0
+            y1 = y0 + i * 1030
+            x2 = x1 + sign * delta_x
+            y2 = y1 + delta_y
+            writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
+
+            x1 = x2
+            y1 = y2
+            x2 = x1 - sign * delta_x
+            y2 = y1 + delta_y
+            writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
+
+    # Bring out the reference hexagons:
+    line_color = "red"
+    string_hex6 = '<polygon points=" {:},{:} {:},{:} {:},{:} {:},{:} {:},{:} {:},{:}" stroke = "{:}" '\
+                  'stroke-width = "{:}" fill="none" /> '
+    x0, y0 = 2326, 2121  # "tl" reference cell
+    writer.write(string_hex6.format(x0, y0,
+                                    x0 + delta_l1, y0,
+                                    x0 + delta_l1 + delta_x, y0 + delta_y,
+                                    x0 + delta_l1, y0 + 2 * delta_y,
+                                    x0, y0 + 2 * delta_y,
+                                    x0 - delta_x, y0 + delta_y,
+                                    line_color, stroke_width
+                                    ))
+    x0, y0 = 2326 + delta_l1 + delta_l2, 2121 + 4 * delta_y  # "centered" reference cell
+    writer.write(string_hex6.format(x0, y0,
+                                    x0 + delta_l1, y0,
+                                    x0 + delta_l1 + delta_x, y0 + delta_y,
+                                    x0 + delta_l1, y0 + 2 * delta_y,
+                                    x0, y0 + 2 * delta_y,
+                                    x0 - delta_x, y0 + delta_y,
+                                    line_color, stroke_width
+                                    ))
+    x0, y0 = 2326, 2121 + 10 * delta_y  # "bl" reference cell
+    writer.write(string_hex6.format(x0, y0,
+                                    x0 + delta_l1, y0,
+                                    x0 + delta_l1 + delta_x, y0 + delta_y,
+                                    x0 + delta_l1, y0 + 2 * delta_y,
+                                    x0, y0 + 2 * delta_y,
+                                    x0 - delta_x, y0 + delta_y,
+                                    line_color, stroke_width
+                                    ))
     writer.write(str_footer)
