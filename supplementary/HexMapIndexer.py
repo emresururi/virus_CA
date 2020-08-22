@@ -443,7 +443,7 @@ with open(fname, 'w') as writer:
     line_color = 'purple'
     stroke_width = 90
     string = '<line x1="{:}" y1="{:}" x2="{:}" y2="{:}" style="stroke:{:};stroke-width:{:}" />\n'
-    for y0 in (2121, 1030 * 8):
+    for y0 in (2121, 1033 * 8):
         for i in range(3):
             x1 = x0 + i * (delta_l1 + delta_l2)
             y1 = y0
@@ -475,7 +475,7 @@ with open(fname, 'w') as writer:
         writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
     x0, y0 = 2326, 2121
     sign = 1
-    for x0 in (2326, 1192 * 7):
+    for x0 in (2326, 1182 * 7):
         sign *= -1
         for i in range(6):
             x1 = x0
@@ -491,9 +491,9 @@ with open(fname, 'w') as writer:
             writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
 
     # Bring out the reference hexagons:
-    line_color = "red"
     string_hex6 = '<polygon points=" {:},{:} {:},{:} {:},{:} {:},{:} {:},{:} {:},{:}" stroke = "{:}" '\
                   'stroke-width = "{:}" fill="none" /> '
+    line_color = "blue"
     x0, y0 = 2326, 2121  # "tl" reference cell
     writer.write(string_hex6.format(x0, y0,
                                     x0 + delta_l1, y0,
@@ -503,6 +503,7 @@ with open(fname, 'w') as writer:
                                     x0 - delta_x, y0 + delta_y,
                                     line_color, stroke_width
                                     ))
+    line_color = "red"
     x0, y0 = 2326 + delta_l1 + delta_l2, 2121 + 4 * delta_y  # "centered" reference cell
     writer.write(string_hex6.format(x0, y0,
                                     x0 + delta_l1, y0,
@@ -512,6 +513,7 @@ with open(fname, 'w') as writer:
                                     x0 - delta_x, y0 + delta_y,
                                     line_color, stroke_width
                                     ))
+    line_color = "purple"
     x0, y0 = 2326, 2121 + 10 * delta_y  # "bl" reference cell
     writer.write(string_hex6.format(x0, y0,
                                     x0 + delta_l1, y0,
