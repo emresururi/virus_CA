@@ -491,9 +491,9 @@ with open(fname, 'w') as writer:
             writer.write(string.format(x1, y1, x2, y2, line_color, stroke_width))
 
     # Bring out the reference hexagons:
-    line_color = "red"
     string_hex6 = '<polygon points=" {:},{:} {:},{:} {:},{:} {:},{:} {:},{:} {:},{:}" stroke = "{:}" '\
                   'stroke-width = "{:}" fill="none" /> '
+    line_color = "blue"
     x0, y0 = 2326, 2121  # "tl" reference cell
     writer.write(string_hex6.format(x0, y0,
                                     x0 + delta_l1, y0,
@@ -503,6 +503,7 @@ with open(fname, 'w') as writer:
                                     x0 - delta_x, y0 + delta_y,
                                     line_color, stroke_width
                                     ))
+    line_color = "red"
     x0, y0 = 2326 + delta_l1 + delta_l2, 2121 + 4 * delta_y  # "centered" reference cell
     writer.write(string_hex6.format(x0, y0,
                                     x0 + delta_l1, y0,
@@ -512,6 +513,7 @@ with open(fname, 'w') as writer:
                                     x0 - delta_x, y0 + delta_y,
                                     line_color, stroke_width
                                     ))
+    line_color = "purple"
     x0, y0 = 2326, 2121 + 10 * delta_y  # "bl" reference cell
     writer.write(string_hex6.format(x0, y0,
                                     x0 + delta_l1, y0,

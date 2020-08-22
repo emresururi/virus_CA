@@ -1422,5 +1422,5 @@
 <line x1="8642" y1="6756" x2="8344" y2="7271" style="stroke:purple;stroke-width:90" />
 <line x1="8344" y1="7271" x2="8642" y2="7786" style="stroke:purple;stroke-width:90" />
 <line x1="8642" y1="7786" x2="8344" y2="8301" style="stroke:purple;stroke-width:90" />
-<polygon points=" 2326,2121 2921,2121 3219,2636 2921,3151 2326,3151 2028,2636" stroke = "red" stroke-width = "90" fill="none" /> <polygon points=" 4113,4181 4708,4181 5006,4696 4708,5211 4113,5211 3815,4696" stroke = "red" stroke-width = "90" fill="none" /> <polygon points=" 2326,7271 2921,7271 3219,7786 2921,8301 2326,8301 2028,7786" stroke = "red" stroke-width = "90" fill="none" /> </g>
+<polygon points=" 2326,2121 2921,2121 3219,2636 2921,3151 2326,3151 2028,2636" stroke = "blue" stroke-width = "90" fill="none" /> <polygon points=" 4113,4181 4708,4181 5006,4696 4708,5211 4113,5211 3815,4696" stroke = "red" stroke-width = "90" fill="none" /> <polygon points=" 2326,7271 2921,7271 3219,7786 2921,8301 2326,8301 2028,7786" stroke = "purple" stroke-width = "90" fill="none" /> </g>
 </svg>
