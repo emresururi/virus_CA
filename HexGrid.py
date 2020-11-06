@@ -4,7 +4,7 @@ from VirusCell import *
 
 
 class HexGrid:
-    def __init__(self, nx, ny, origin="tl", center_origin=()):
+    def __init__(self, nx: object, ny: object, origin: object = "tl", center_origin: object = ()) -> object:
         """Initialize the hex grid.
         The grid contains nx columns and ny rows
         and origin can be assigned to one of:
@@ -108,6 +108,14 @@ class HexGrid:
     def get_xy(self, x, y):
         [q, r] = self.xy2qr((x, y))
         return self.maze_map[q, r]
+#diğer hasta hücreleri de eklemek için ekledim
+    def get_xy1(self, x, y):
+        [q, r] = self.xy2qr((x, y))
+        return self.maze_map[q, r]
+
+    def get_xy2(self, x, y):
+        [q, r] = self.xy2qr((x, y))
+        return self.maze_map[q, r]
 
     def set_cell_xy(self, x, y, obj):
         # Fills the cell at location x,y with object obj
@@ -148,8 +156,8 @@ class HexGrid:
         res_x = res_y = 480
         disp = pg.display.set_mode((res_x, res_y))
         pg.display.set_caption("HexGrid")
-        color_border = pg.Color('purple')
-        colors = ("purple", "yellow", "blue", "red", "green", "brown", "orange")
+        color_border = pg.Color('black')
+        colors = ("purple", "yellow", "blue", "red", "green", "darkred", "orange")
         border_thickness = 8
 
         # To -optionally- add spaces between the hexagons
