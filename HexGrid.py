@@ -157,7 +157,7 @@ class HexGrid:
         disp = pg.display.set_mode((res_x, res_y))
         pg.display.set_caption("HexGrid")
         color_border = pg.Color('black')
-        colors = ("purple", "yellow", "blue", "red", "green", "darkred", "orange")
+        colors = ("white", "gray", "blue", "red", "green", "darkred", "orange")
         border_thickness = 8
 
         # To -optionally- add spaces between the hexagons
