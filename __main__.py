@@ -27,8 +27,8 @@ print("The state of the <0,0> cell is: {:}".format(grid_bl.get_xy(0, 0).state))
 
 # Set its state: 3 ayrı state 3 ayrı hasta
 grid_bl.get_xy(0, 0).state = 5
-grid_bl.get_xy1(12, 0).state = 5
-grid_bl.get_xy1(12, 8).state = 5
+grid_bl.get_xy(12, 0).state = 5
+grid_bl.get_xy(12, 8).state = 5
 
 
 print("After the update, the state of the <1,1> cell is now: {:}".format(grid_bl.get_xy(1, 1).state))
