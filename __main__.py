@@ -40,11 +40,11 @@ for xy in grid_bl.get_neighbours(0, 0):
 
 for xy in grid_bl.get_neighbours(12, 0):
     # print(xy)
-    grid_bl.get_xy1(xy[0], xy[1]).state = 3
+    grid_bl.get_xy(xy[0], xy[1]).state = 3
 
 for xy in grid_bl.get_neighbours(12, 8):
     # print(xy)
-    grid_bl.get_xy2(xy[0], xy[1]).state = 4
+    grid_bl.get_xy(xy[0], xy[1]).state = 4
 
 
 # Print the states:

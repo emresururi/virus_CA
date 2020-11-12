@@ -108,14 +108,6 @@ class HexGrid:
     def get_xy(self, x, y):
         [q, r] = self.xy2qr((x, y))
         return self.maze_map[q, r]
-#diğer hasta hücreleri de eklemek için ekledim
-    def get_xy1(self, x, y):
-        [q, r] = self.xy2qr((x, y))
-        return self.maze_map[q, r]
-
-    def get_xy2(self, x, y):
-        [q, r] = self.xy2qr((x, y))
-        return self.maze_map[q, r]
 
     def set_cell_xy(self, x, y, obj):
         # Fills the cell at location x,y with object obj
