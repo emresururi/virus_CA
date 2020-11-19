@@ -18,6 +18,7 @@ class HexGrid:
              and {left/up} cell for even numbers.
 
         """
+        pg.display.init()
         self.nx, self.ny = nx, ny
         self.ny_m1 = self.ny - 1
         self.origin = origin
@@ -141,7 +142,7 @@ class HexGrid:
     def visualize(self):
         # Visualizes the grid using PyGame
         # pg.init()
-        pg.display.init()
+        #pg.display.init()
         clock = pg.time.Clock()
         clock.tick(30)
 
@@ -185,5 +186,5 @@ class HexGrid:
                 pg.draw.polygon(disp, pg.Color(colors[self.maze_map[q, r].state]),
                                 hex_points + [x_cent, y_cent] + (i * vec_a + j * vec_b))
                 pg.display.flip()
-        while pg.event.wait().type != pg.QUIT:
-            pass
+        #while pg.event.wait().type != pg.QUIT:
+        #    pass

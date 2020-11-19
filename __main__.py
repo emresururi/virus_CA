@@ -1,5 +1,6 @@
 from HexGrid import *
-
+import random
+from time import sleep
 nx = 20
 ny = 20
 
@@ -26,7 +27,7 @@ print(grid_bl.get_neighbours(0, 0))
 print("The state of the <0,0> cell is: {:}".format(grid_bl.get_xy(0, 0).state))
 
 # Set its state: 3 ayrı state 3 ayrı hasta
-grid_bl.get_xy(0, 0).state = 5
+grid_bl.get_xy(0, 0).state = 4
 grid_bl.get_xy(12, 0).state = 5
 grid_bl.get_xy(12, 8).state = 5
 
@@ -53,7 +54,22 @@ for x in grid_bl.range_x:
         print("{:d},{:d}: {:d}".format(x, y, grid_bl.get_xy(x, y).state), end=" | ")
     print("")
 
-grid_bl.visualize()
+print(grid_bl.get_xy(0,0).state)
+mevcut_x = 0
+mevcut_y = 0
+for adimlar in range(50):
+    orijinal_koordinatlar_x = mevcut_x
+    orijinal_koordinat_y = mevcut_y
+    komsular = grid_bl.get_neighbours(mevcut_x,mevcut_y)
+    gidecegi_yer = random.choice(komsular)
+    grid_bl.get_xy(gidecegi_yer[0],gidecegi_yer[1]).state = grid_bl.get_xy(mevcut_x,mevcut_y).state
+    grid_bl.get_xy(mevcut_x,mevcut_y).state = 0
+    mevcut_x = gidecegi_yer[0]
+    mevcut_y = gidecegi_yer[1]
+    print(adimlar)
+    grid_bl.visualize()
+
+    #sleep(3.0)
 
 
 
