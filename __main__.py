@@ -59,7 +59,7 @@ mevcut_y2 = 2
 
 
 
-for adimlar in range(100):
+for adimlar in range(10):
 
     orijinal_koordinatlar_x = mevcut_x1
     orijinal_koordinat_y = mevcut_y1
@@ -102,6 +102,20 @@ for adimlar in range(100):
     sleep(0.1)
     print(adimlar)
     grid_bl.visualize()
+
+xy_hucre1 = [3,3]
+xy_hucre2 = [3,-7]
+n = grid_bl.get_neighbours(xy_hucre1[0],xy_hucre1[1])
+xy = xy_hucre2
+for i in n:
+    var = False
+    if(xy == i ):
+        var = True
+        break
+if(var):
+    print("var")
+else:
+    print("yok")
 
 
 
