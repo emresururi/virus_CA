@@ -19,6 +19,8 @@ class HexGrid:
 
         """
         pg.display.init()
+        res_x = res_y = 480
+        self.disp = pg.display.set_mode((res_x, res_y))
         self.nx, self.ny = nx, ny
         self.ny_m1 = self.ny - 1
         self.origin = origin
@@ -144,13 +146,13 @@ class HexGrid:
         # pg.init()
         #pg.display.init()
         clock = pg.time.Clock()
-        clock.tick(30)
+        clock.tick(100)
 
         res_x = res_y = 480
-        disp = pg.display.set_mode((res_x, res_y))
+        #disp = pg.display.set_mode((res_x, res_y))
         pg.display.set_caption("HexGrid")
         color_border = pg.Color('black')
-        colors = ("white", "gray", "blue", "red", "green", "darkred", "orange")
+        colors = ("purple", "white", "blue", "red", "green", "darkred", "orange", "chocolate", "darkslategray", "salmon")
         border_thickness = 8
 
         # To -optionally- add spaces between the hexagons
@@ -171,7 +173,7 @@ class HexGrid:
 
         vec_a = (np.array([0, 1]) * np.sqrt(3) * r).astype(int)
         vec_b = (np.array([3, -np.sqrt(3)]) * r / 2).astype(int)
-        pg.draw.rect(disp, color_border, [0, 0, res_x, res_y], border_thickness + 5)
+        pg.draw.rect(self.disp, color_border, [0, 0, res_x, res_y], border_thickness + 5)
 
         # Define the hexagon corners
         hex_points = []
@@ -183,7 +185,7 @@ class HexGrid:
         for q in range(self.ny):
             for r in range(self.nx):
                 i, j = self.__qr2ij(q, r)
-                pg.draw.polygon(disp, pg.Color(colors[self.maze_map[q, r].state]),
+                pg.draw.polygon(self.disp, pg.Color(colors[self.maze_map[q, r].state]),
                                 hex_points + [x_cent, y_cent] + (i * vec_a + j * vec_b))
                 pg.display.flip()
         #while pg.event.wait().type != pg.QUIT:
