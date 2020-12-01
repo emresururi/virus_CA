@@ -146,7 +146,7 @@ class HexGrid:
         # pg.init()
         #pg.display.init()
         clock = pg.time.Clock()
-        clock.tick(100)
+        clock.tick(10)
 
         res_x = res_y = 480
         #disp = pg.display.set_mode((res_x, res_y))
