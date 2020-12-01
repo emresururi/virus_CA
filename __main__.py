@@ -70,7 +70,8 @@ class cell(object):
             grid_bl.get_xy(self.x, self.y).state = self.death_state
             self.Life = False
             print("hücre öldü")
-        grid_bl.visualize()
+
+
 
 
 
@@ -100,6 +101,7 @@ while Running:
         i.move()
         if i.Life == False:
             cells.remove(i)
+    grid_bl.visualize()
 
 
     #state i 1 e esıt olan tum hucrelerin stateini sıfırlıyor arka planı net görebilmek için yaptım
