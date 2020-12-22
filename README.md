@@ -1,7 +1,7 @@
 # virus_CA
 Cellular Automata based virus spread modelling.
 
-Developed for a FIZ434 project by Ekin B. and EST.
+Developed for a FIZ434 project by Oğuzhan Topçu (previously by Ekin B.) and EST .
 
 Hexagon grid will be used along with a probabilistic evaluation.
 
