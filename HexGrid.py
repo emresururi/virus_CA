@@ -28,6 +28,7 @@ class HexGrid:
         self.c_x = self.c_y = 0
         self.maze_map = np.empty((ny, nx), dtype=object)
         self.neighbours = np.empty((ny, nx), dtype=object)
+        self.walls = np.empty((ny,nx), dtype=object)
         self.flag_tl = 0
         if self.origin == "tl":
             self.flag_tl = 1
@@ -63,6 +64,7 @@ class HexGrid:
                 self.maze_map[q, r] = VirusCell((x + y + 1) % 2)
                 # Neighbours
                 self.neighbours[q, r] = self.calc_neighbours(x, y)
+                self.walls[q,r] = [False,False,False,False,False,False]
 
     def __xy2ij(self, x, y):
         # returns the row-col [i,j] equivalent of (x,y)
@@ -117,6 +119,25 @@ class HexGrid:
         [q, r] = self.xy2qr((x, y))
         self.maze_map[q, r] = obj
 
+    def set_wall_xy(self,x,y,direction):
+        # Sets a wall between the given cell and the direction
+        # The direction map is:
+        # 0: NW | 1:N | 2: NE | 3: SE | 4:S | 5:SW
+        self.get_wall_xy(x,y)[direction] = True
+        n =self.get_neighbours(x,y)[direction]
+        contra_direction = [3,4,5,0,1,2]
+        self.get_wall_xy(n[0],n[1])[contra_direction[direction]] = True
+
+    def erase_wall_xy(self,x,y,direction):
+        # Sets a wall between the given cell and the direction
+        # The direction map is:
+        # 0: NW | 1:N | 2: NE | 3: SE | 4:S | 5:SW
+        self.get_wall_xy(x,y)[direction] = 0
+
+    def get_wall_xy(self,x,y):
+        [q, r] = self.xy2qr((x, y))
+        return self.walls[q, r]
+
     def calc_neighbours(self, x, y):
         i, j = self.xy2ij((x, y))
         nlist = [[i - 1, j - 1], [i - 1, j], [i, j + 1], [i + 1, j + 1], [i + 1, j], [i, j - 1]]
@@ -139,7 +160,8 @@ class HexGrid:
     def get_neighbours(self, x, y):
         [q, r] = self.xy2qr((x, y))
         return self.neighbours[q, r]
-
+    def get_unwalled_neighbours(self,x,y):
+        return np.array(self.get_neighbours(x,y))[np.logical_not(np.array(self.get_wall_xy(x,y)))]
     # TODO: Draw (export to SVG) or visualization method
     def visualize(self):
         # Visualizes the grid using PyGame
@@ -187,6 +209,47 @@ class HexGrid:
                 i, j = self.__qr2ij(q, r)
                 pg.draw.polygon(self.disp, pg.Color(colors[self.maze_map[q, r].state]),
                                 hex_points + [x_cent, y_cent] + (i * vec_a + j * vec_b))
+
+                k1 = np.add([x_cent+9,y_cent+17],[i * vec_a + j * vec_b])
+                k2 = np.add([x_cent + 19, y_cent], [i * vec_a + j * vec_b])
+                l1 = np.add([x_cent-9,y_cent+17],[i * vec_a + j * vec_b])
+                l2 = np.add([x_cent - 19, y_cent], [i * vec_a + j * vec_b])
+                m1 = np.add([x_cent+9,y_cent+17],[i * vec_a + j * vec_b])
+                m2 = np.add([x_cent -9, y_cent+17], [i * vec_a + j * vec_b])
+                n1 = np.add([x_cent-9,y_cent-17],[i * vec_a + j * vec_b])
+                n2 = np.add([x_cent +9, y_cent-17], [i * vec_a + j * vec_b])
+                o1 = np.add([x_cent + 19, y_cent ], [i * vec_a + j * vec_b])
+                o2 = np.add([x_cent + 9, y_cent + -17], [i * vec_a + j * vec_b])
+                p1 = np.add([x_cent - 19, y_cent ], [i * vec_a + j * vec_b])
+                p2 = np.add([x_cent - 9, y_cent - 17], [i * vec_a + j * vec_b])
+
+                wall_color = "blue"
+
+
+                xy = self.ij2xy((i,j))
+                walls = self.get_wall_xy(xy[0],xy[1])
+                #print(self.ij2xy((i,j)),walls)
+                if(walls[3]):
+                    # SE (3)
+                    pg.draw.line(self.disp,pg.Color(wall_color),(k1[0,0],k1[0,1]),(k2[0,0],k2[0,1]),5)
+                if (walls[5]):
+                    # SW (5)
+                    pg.draw.line(self.disp, pg.Color(wall_color), (l1[0, 0], l1[0, 1]), (l2[0, 0], l2[0, 1]), 5)
+                if (walls[4]):
+                    # S (4)
+                    pg.draw.line(self.disp, pg.Color(wall_color), (m1[0, 0], m1[0, 1]), (m2[0, 0], m2[0, 1]), 5)
+                if (walls[1]):
+                    # N (1)
+                    pg.draw.line(self.disp, pg.Color(wall_color), (n1[0, 0], n1[0, 1]), (n2[0, 0], n2[0, 1]), 5)
+                if (walls[2]):
+                    # NE (2)
+                    pg.draw.line(self.disp, pg.Color(wall_color), (o1[0, 0], o1[0, 1]), (o2[0, 0], o2[0, 1]), 5)
+                if (walls[0]):
+                    # NW (0)
+                    pg.draw.line(self.disp, pg.Color(wall_color), (p1[0, 0], p1[0, 1]), (p2[0, 0], p2[0, 1]), 5)
+
                 pg.display.flip()
+
+        #pg.draw.line(self.disp,pg.Color("blue"),(20,30),(50,70))
         #while pg.event.wait().type != pg.QUIT:
         #    pass
