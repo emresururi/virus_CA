@@ -222,5 +222,5 @@ while Running == True:
 
 plt.xlabel('Turn')
 plt.ylabel('Total Cell')
-plt.title('Graph')
+plt.title('Graph of number of cell and Turn')
 plt.plot(turn_number, n_cell, color="Red")
