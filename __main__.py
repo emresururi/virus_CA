@@ -222,5 +222,5 @@ while Running == True:
 
 plt.xlabel('Turn')
 plt.ylabel('Total Cell')
-plt.title('SAXS DATA3')
+plt.title('Graph')
 plt.plot(turn_number, n_cell, color="Red")
