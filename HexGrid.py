@@ -247,6 +247,7 @@ class HexGrid:
         for i in range(6):
             hex_points.append([np.cos(theta * i) * r0, np.sin(theta * i) * r0])
         hex_points = np.array(hex_points).astype(int)
+        hps = [hex_points[1,0],hex_points[1,1],hex_points[0,0],hex_points[2,0],hex_points[3,0],hex_points[4,1]]
 
         for q in range(self.ny):
             for r in range(self.nx):
@@ -254,18 +255,18 @@ class HexGrid:
                 pg.draw.polygon(self.disp, pg.Color(colors[self.maze_map[q, r].state]),
                                 hex_points + [x_cent, y_cent] + (i * vec_a + j * vec_b))
 
-                k1 = np.add([x_cent+9,y_cent+17],[i * vec_a + j * vec_b])
-                k2 = np.add([x_cent + 19, y_cent], [i * vec_a + j * vec_b])
-                l1 = np.add([x_cent-9,y_cent+17],[i * vec_a + j * vec_b])
-                l2 = np.add([x_cent - 19, y_cent], [i * vec_a + j * vec_b])
-                m1 = np.add([x_cent+9,y_cent+17],[i * vec_a + j * vec_b])
-                m2 = np.add([x_cent -9, y_cent+17], [i * vec_a + j * vec_b])
-                n1 = np.add([x_cent-9,y_cent-17],[i * vec_a + j * vec_b])
-                n2 = np.add([x_cent +9, y_cent-17], [i * vec_a + j * vec_b])
-                o1 = np.add([x_cent + 19, y_cent ], [i * vec_a + j * vec_b])
-                o2 = np.add([x_cent + 9, y_cent + -17], [i * vec_a + j * vec_b])
-                p1 = np.add([x_cent - 19, y_cent ], [i * vec_a + j * vec_b])
-                p2 = np.add([x_cent - 9, y_cent - 17], [i * vec_a + j * vec_b])
+                k1 = np.add([x_cent+hps[0],y_cent+hps[1]],[i * vec_a + j * vec_b])
+                k2 = np.add([x_cent +hps[2], y_cent], [i * vec_a + j * vec_b])
+                l1 = np.add([x_cent+hps[3],y_cent+hps[1]],[i * vec_a + j * vec_b])
+                l2 = np.add([x_cent +hps[4], y_cent], [i * vec_a + j * vec_b])
+                m1 = np.add([x_cent+hps[0],y_cent+hps[1]],[i * vec_a + j * vec_b])
+                m2 = np.add([x_cent +hps[3], y_cent+hps[1]], [i * vec_a + j * vec_b])
+                n1 = np.add([x_cent+hps[3],y_cent+hps[5]],[i * vec_a + j * vec_b])
+                n2 = np.add([x_cent +hps[0], y_cent+hps[5]], [i * vec_a + j * vec_b])
+                o1 = np.add([x_cent +hps[2], y_cent ], [i * vec_a + j * vec_b])
+                o2 = np.add([x_cent +hps[0], y_cent + +hps[5]], [i * vec_a + j * vec_b])
+                p1 = np.add([x_cent +hps[4], y_cent ], [i * vec_a + j * vec_b])
+                p2 = np.add([x_cent +hps[3], y_cent +hps[5]], [i * vec_a + j * vec_b])
 
                 wall_color = "blue"
 
