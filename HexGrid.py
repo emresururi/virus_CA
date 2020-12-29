@@ -28,6 +28,8 @@ class HexGrid:
         self.c_x = self.c_y = 0
         self.maze_map = np.empty((ny, nx), dtype=object)
         self.neighbours = np.empty((ny, nx), dtype=object)
+        self.neighbours_all = np.empty((ny, nx), dtype=object)
+        self.neighbours_TF = np.empty((ny, nx), dtype=object)
         self.walls = np.empty((ny,nx), dtype=object)
         self.flag_tl = 0
         if self.origin == "tl":
@@ -64,7 +66,13 @@ class HexGrid:
                 self.maze_map[q, r] = VirusCell((x + y + 1) % 2)
                 # Neighbours
                 self.neighbours[q, r] = self.calc_neighbours(x, y)
+                k = self.calc_neighbours2(x,y)
+                self.neighbours_all[q,r] = k[0][:]
+                self.neighbours_TF[q,r] = k[1][:]
+                #self.neighbours[q,r] = list(k[0][k[1]])
+
                 self.walls[q,r] = [False,False,False,False,False,False]
+
 
     def __xy2ij(self, x, y):
         # returns the row-col [i,j] equivalent of (x,y)
@@ -123,8 +131,13 @@ class HexGrid:
         # Sets a wall between the given cell and the direction
         # The direction map is:
         # 0: NW | 1:N | 2: NE | 3: SE | 4:S | 5:SW
+        #      1
+        #   0     2
+        #   5     3
+        #      4
+
         self.get_wall_xy(x,y)[direction] = True
-        n =self.get_neighbours(x,y)[direction]
+        n =self.get_neighbours_all_xy(x,y)[direction]
         contra_direction = [3,4,5,0,1,2]
         self.get_wall_xy(n[0],n[1])[contra_direction[direction]] = True
 
@@ -137,6 +150,14 @@ class HexGrid:
     def get_wall_xy(self,x,y):
         [q, r] = self.xy2qr((x, y))
         return self.walls[q, r]
+
+    def get_neighboursTF_xy(self,x,y):
+        [q, r] = self.xy2qr((x, y))
+        return self.neighbours_TF[q, r]
+
+    def get_neighbours_all_xy(self,x,y):
+        [q, r] = self.xy2qr((x, y))
+        return self.neighbours_all[q, r]
 
     def calc_neighbours(self, x, y):
         i, j = self.xy2ij((x, y))
@@ -157,11 +178,34 @@ class HexGrid:
         nlist = list(map(self.qr2xy, nlist))
         return nlist
 
+    def calc_neighbours2(self, x, y):
+        i, j = self.xy2ij((x, y))
+        nlist = [[i - 1, j - 1], [i - 1, j], [i, j + 1], [i + 1, j + 1], [i + 1, j], [i, j - 1]]
+        """
+        nlist.append([x - 1, y - 1])
+        nlist.append([x - 1, y])
+        nlist.append([x, y - 1])
+        nlist.append([x, y + 1])
+        nlist.append([x + 1, y])
+        nlist.append([x + 1, y + 1])
+        """
+        nlist = np.array(nlist)
+        nlist = np.array(list(map(self.ij2qr, nlist)))
+        filt = np.logical_and(np.logical_and(nlist[:, 0] >= 0, nlist[:, 1] >= 0),
+                              np.logical_and(nlist[:, 0] < self.ny, nlist[:, 1] < self.nx))
+        #nlist = nlist[filt]
+        nlist = np.array(list(map(self.qr2xy, nlist)))
+        return (nlist,filt)
+
     def get_neighbours(self, x, y):
         [q, r] = self.xy2qr((x, y))
-        return self.neighbours[q, r]
+        possible_directions = self.neighbours_TF[q,r]
+        existing_walls = self.walls[q,r]
+        possible_neighbors_filter = np.logical_and(possible_directions,np.logical_not(existing_walls))
+        return list(self.neighbours_all[q, r][possible_neighbors_filter])
+
     def get_unwalled_neighbours(self,x,y):
-        return np.array(self.get_neighbours(x,y))[np.logical_not(np.array(self.get_wall_xy(x,y)))]
+        return np.array(self.get_neighbours_all_xy(x,y))[np.logical_not(np.array(self.get_wall_xy(x,y)))]
     # TODO: Draw (export to SVG) or visualization method
     def visualize(self):
         # Visualizes the grid using PyGame

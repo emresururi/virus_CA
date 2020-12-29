@@ -21,7 +21,12 @@ oi = 3
 oj = 2
 
 grid_bl = HexGrid(nx, ny, "center", (oi, oj))
-
+for x in range(-2,7,2):
+    grid_bl.set_wall_xy(x,0,4)
+    grid_bl.set_wall_xy(x, 0, 3)
+for x in range(-1,7,2):
+    grid_bl.set_wall_xy(x,-1,1)
+    grid_bl.set_wall_xy(x, -1, 2)
 
 #self.x = random.randint(nx_lim_l, nx_lim_r)
 #self.y = random.randint(ny_lim_l, ny_lim_r)
@@ -78,7 +83,8 @@ class cell(object):
             elif self.y <= -2:
                 self.sick_possibility = random.choice(self.possibility)
             #self.state -= 1
-            self.komsular.remove(gidecegi_yer)
+            #self.komsular.remove(gidecegi_yer)
+            [x for x in self.komsular if not (x==gidecegi_yer).all()]
             new_pos = random.choice(self.komsular)
             #print("yasak konum silindi ve yeni konum seçildi")
             #print("yeni konum", new_pos)
@@ -90,7 +96,8 @@ class cell(object):
             self.komsular.append(gidecegi_yer)
         #gidecegi yerde bir hücre varsa oraya gitmiyor
         elif grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 2 and grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 3 and grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 4 and grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 5:
-            self.komsular.remove(gidecegi_yer)
+            #self.komsular.remove(gidecegi_yer)
+            [x for x in self.komsular if not (x == gidecegi_yer).all()]
             new_pos = random.choice(self.komsular)
             print("yasak konum silindi ve yeni konum seçildi")
             #print("yeni konum", new_pos)
@@ -224,3 +231,4 @@ plt.xlabel('Turn')
 plt.ylabel('Total Cell')
 plt.title('Graph of number of cell and Turn')
 plt.plot(turn_number, n_cell, color="Red")
+plt.show()
