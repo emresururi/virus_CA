@@ -81,7 +81,8 @@ class cell(object):
             #   Sağlıklı Hücrelerin hareket tanımı
             if self.state == 4:
                 if grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 4:
-                    self.komsular.remove(gidecegi_yer)
+                    #self.komsular.remove(gidecegi_yer)
+                    self.komsular = [x for x in self.komsular if not (x==gidecegi_yer).all()]
                     new_pos = random.choice(self.komsular)
                     print("yasak konum silindi ve yeni konum seçildi")
                     #print("yeni konum", new_pos)
@@ -102,7 +103,8 @@ class cell(object):
                             self.sick_possibility = random.choice(self.possibility_mask)
                         else:
                             self.sick_possibility = random.choice(self.possibility)
-                    self.komsular.remove(gidecegi_yer)
+                    #self.komsular.remove(gidecegi_yer)
+                    self.komsular = [x for x in self.komsular if not (x == gidecegi_yer).all()]
                     new_pos = random.choice(self.komsular)
                     print("yasak konum silindi ve yeni konum seçildi")
                     #print("yeni konum", new_pos)
@@ -134,7 +136,8 @@ class cell(object):
                     self.y = gidecegi_yer[1]
             elif self.state == 3 or self.state == 5:
                 if grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 4 or grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 3 or grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 5:
-                    self.komsular.remove(gidecegi_yer)
+                    # self.komsular.remove(gidecegi_yer)
+                    self.komsular = [x for x in self.komsular if not (x == gidecegi_yer).all()]
                     new_pos = random.choice(self.komsular)
                     print("yasak konum silindi ve yeni konum seçildi")
                     #print("yeni konum", new_pos)
