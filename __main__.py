@@ -1,20 +1,21 @@
-######################################################################################################
-# Olasılık tabanlı virus yayılma modeli,
-# maskeli hücreler ve bağışıklık kazanmış hücre durumları modelde mevcut
-# İstenilen sayıda hücre, hasta hücre ve maskeli hücre ile başlatılması mümkün
-# Simulasyon istenilen tur sayısı sonuna ulaştığında simulasyonla ilgili datalar grafik şeklinde gösterilmekte
-######################################################################################################
+################################################################################################################
+# Hücresel otomata tabanlı olasılığa bağlı virus yayılma modeli,                                               #
+# maskeli hücreler ve bağışıklık kazanmış hücre durumları modelde mevcut                                       #
+# İstenilen sayıda hücre, hasta hücre ve maskeli hücre ile başlatılması mümkün                                 #
+# Simulasyon istenilen tur sayısı sonuna ulaştığında simulasyonla ilgili datalar grafik şeklinde gösterilmekte #
+################################################################################################################
 
 
 from HexGrid import *
 import random
 from matplotlib import pyplot as plt
+from scipy.stats import norm
 import time
 nx = 30
 ny = 30
-number_of_cell = 300    #başlangıçtaki hasta hücre sayısı
-sick_cell = 10          #başlangıçtaki hasta hücre sayısı (toplam hücrelerin içinden)
-masked_cell = 0         #maske kullanan hücrelerin sayısı
+number_of_cell = 350    #başlangıçtaki hasta hücre sayısı
+sick_cell = 1          #başlangıçtaki hasta hücre sayısı (toplam hücrelerin içinden)
+masked_cell = 35         #maske kullanan hücrelerin sayısı
 stop_turn = 200         #Simulasyon uzunluğu
 
 
@@ -38,21 +39,35 @@ grid_bl = HexGrid(nx, ny, "center", (oi, oj))
 
 # Duvar üreteçleri
 
-for x in range(-2, 10, 2):
+
+
+for x in range(-2, 3, 2):
     grid_bl.set_wall_xy(x, -12, 4)
     grid_bl.set_wall_xy(x, -12, 3)
-for x in range(-1, 10, 2):
+for x in range(-1, 3, 2):
     grid_bl.set_wall_xy(x, -13, 1)
     grid_bl.set_wall_xy(x, -13, 2)
 
-for x in range(16, 28, 2):
+for x in range(6, 12, 2):
     grid_bl.set_wall_xy(x, -12, 4)
     grid_bl.set_wall_xy(x, -12, 3)
-for x in range(15, 27, 2):
+for x in range(5, 12, 2):
     grid_bl.set_wall_xy(x, -13, 1)
     grid_bl.set_wall_xy(x, -13, 2)
 
+for x in range(16, 22, 2):
+    grid_bl.set_wall_xy(x, -12, 4)
+    grid_bl.set_wall_xy(x, -12, 3)
+for x in range(15, 22, 2):
+    grid_bl.set_wall_xy(x, -13, 1)
+    grid_bl.set_wall_xy(x, -13, 2)
 
+for x in range(26, 27, 2):
+    grid_bl.set_wall_xy(x, -12, 4)
+    grid_bl.set_wall_xy(x, -12, 3)
+for x in range(25, 27, 2):
+    grid_bl.set_wall_xy(x, -13, 1)
+    grid_bl.set_wall_xy(x, -13, 2)
 
 
 
@@ -62,20 +77,20 @@ class cell(object):
 
         self.x = random.randint(nx_lim_l, nx_lim_r)
         self.y = random.randint(ny_lim_l, ny_lim_r)
-        self.possibility = [1,2,3,4]
-        self.possibility_in = [1,2]
+        self.possibility = [1,2,]
+        self.possibility_in = [1,2,1,1]
         self.possibility_mask = [1,2,3,4,5,6,7]
         self.possibility_mask_in = [1,2,3,4,5,]
         self.dirty_floor_posiblity = [1,2,3,4,5,6,7,8,9]
         self.dirty_floor_posiblity_in = [1,2,3,4,5]
         self.pdc = random.randint(0,11)
-        self.live_or_death = ["L1", "L2", "L3","L4","L5","L6","L7","L8","L9","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19", "D"]
+        self.live_or_death = ["L1", "L2", "L3","L4","L5","L6","L7","L8","L9","L10","L11","L12","L13","L14","L15","L16","L17","L18","L19",]
         self.sick_state = 3
         self.deathly_sick_state = 5
         self.death_state = 0
         self.deathly_sick_posibility = "healthy"
         self.live_death = "Live"
-        self.dirty_floor_or_normal = [0, 6]
+        self.dirty_floor_or_normal = [0,6]
         self.dirty_floor_in = [0,9,9]
         self.deathly = False
         self.disease = False
@@ -85,7 +100,7 @@ class cell(object):
         self.state = 4
         self.sick_possibility = 0
         self.immunity = False
-        self.immunity_calc = random.randint(7,10)
+        self.immunity_calc = random.randint(190,200)
     # hareketi tanımlayan fonksiyon
     def move(self):
         self.Life = True
@@ -109,12 +124,12 @@ class cell(object):
                     self.komsular.append(gidecegi_yer)
                 elif grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 3 or grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 5:
                     if self.immunity == False:
-                        if self.y >= -2:
+                        if self.y >= -12:
                             if self.mask == True:
                                 self.sick_possibility = random.choice(self.possibility_mask_in)
                             else:
-                                self.sick_possibility = random.choice(self.possibility)
-                        if self.y <= -2:
+                                self.sick_possibility = random.choice(self.possibility_in)
+                        if self.y <= -12:
                             if self.mask == True:
                                 self.sick_possibility = random.choice(self.possibility_mask)
                             else:
@@ -132,9 +147,9 @@ class cell(object):
                     self.komsular.append(gidecegi_yer)
                 elif grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 6 or grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state == 9:
                     if self.immunity == False:
-                        if self.y >= -2:
-                            self.dirty_floor_sick = random.choice(self.dirty_floor_posiblity)
-                        if self.y <= -2:
+                        if self.y >= -12:
+                            self.dirty_floor_sick = random.choice(self.dirty_floor_posiblity_in)
+                        if self.y <= -12:
                             self.dirty_floor_sick = random.choice(self.dirty_floor_posiblity)
                         if self.dirty_floor_sick == 1:
                             print("zeminden bulastı")
@@ -160,9 +175,9 @@ class cell(object):
                     #print("yeni konum", new_pos)
                     grid_bl.get_xy(new_pos[0], new_pos[1]).state = grid_bl.get_xy(self.x, self.y).state
                     grid_bl.get_xy(new_pos[0], new_pos[1]).state = self.state
-                    if self.y >= -2:
-                        grid_bl.get_xy(self.x, self.y).state = random.choice(self.dirty_floor_or_normal)
-                    if self.y <= -2:
+                    if self.y >= -12:
+                        grid_bl.get_xy(self.x, self.y).state = random.choice(self.dirty_floor_in)
+                    if self.y <= -12:
                         grid_bl.get_xy(self.x, self.y).state = random.choice(self.dirty_floor_or_normal)
                     self.x = new_pos[0]
                     self.y = new_pos[1]
@@ -170,9 +185,9 @@ class cell(object):
                 else:
                     grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state = grid_bl.get_xy(self.x, self.y).state
                     grid_bl.get_xy(gidecegi_yer[0], gidecegi_yer[1]).state = self.state
-                    if self.y >= -2:
-                        grid_bl.get_xy(self.x, self.y).state = random.choice(self.dirty_floor_or_normal)
-                    if self.y <= -2:
+                    if self.y >= -12:
+                        grid_bl.get_xy(self.x, self.y).state = random.choice(self.dirty_floor_in)
+                    if self.y <= -12:
                         grid_bl.get_xy(self.x, self.y).state = random.choice(self.dirty_floor_or_normal)
                     self.x = gidecegi_yer[0]
                     self.y = gidecegi_yer[1]
@@ -188,7 +203,7 @@ class cell(object):
 
         if self.disease == True:
             self.duration_of_illnes -= 1
-            self.deathly_sick_posibility = random.randint(0,11)
+            self.deathly_sick_posibility = random.randint(0,300)
             #print(self.deathly_sick_posibility)
             #print("hastalatıktaki gün",self.duration_of_illnes)
             self.sick_possibility = 0
@@ -245,10 +260,14 @@ f = 0
 z = 0
 x = 0
 y = 0
+immu = 0
 infected_cell = [sick_cell]
 healthy_cell = [number_of_cell-sick_cell]
 death_cell = [0]
-mask_cell = [masked_cell]
+mask_cell = [0]
+immunity_cell = [0]
+r_g = [0]
+s_g = [number_of_cell]
 #hücrelerin hareketini güncelliyor ve olen hucreleri siliyor
 Running = True
 turn = 0
@@ -258,6 +277,7 @@ while Running == True:
     turn_number.append(turn)
     a = len(cells)
     n_cell.append(a)
+
     #infected_cell.append(infected_number)
     if turn == stop_turn:
         break
@@ -276,6 +296,13 @@ while Running == True:
         if i.Life == False:
             cells.remove(i)
             z += 1
+        if i.immunity == True:
+            immu += 1
+    s = y - immu
+    s_g.append(s)
+    r = immu + z
+    r_g.append(r)
+    immunity_cell.append(immu)
     infected_cell.append(x)
     healthy_cell.append(y)
     death_cell.append(z)
@@ -283,8 +310,10 @@ while Running == True:
     y = 0
     x = 0
     f = 0
+    immu = 0
+    s = 0
+    r = 0
     grid_bl.visualize()
-
 
 
 
@@ -309,14 +338,23 @@ while Running == True:
                     dirty_floor = 0
 
 total = len(cells) - len(healthy_cell) + len(death_cell)
+infy =np.mean(infected_cell)
+
+print(infy)
 
 plt.xlabel('Tur')
 plt.ylabel('Hucre Sayısı')
 plt.title('Virus simulasyonu')
-plt.plot(turn_number, n_cell, color="Orange")
+#plt.plot(turn_number, n_cell, color="Orange")
+#plt.plot(turn_number,immunity_cell, color= "blue")
+#plt.plot(turn_number, infected_cell, color="Red")
+#plt.plot(turn_number, healthy_cell, color="Green")
+#plt.plot(turn_number, death_cell, color="DarkRed")
+#plt.plot(turn_number, mask_cell, color="Yellow")
+plt.plot(turn_number, s_g, color="yellow")
 plt.plot(turn_number, infected_cell, color="Red")
-plt.plot(turn_number, healthy_cell, color="Green")
-plt.plot(turn_number, death_cell, color="DarkRed")
-plt.plot(turn_number, mask_cell, color="Yellow")
-plt.legend(['Mevcut Hucre', 'Enfekte Hucre', 'Saglıklı Hucre','Olu Hucre','Tedbir almıs hucre'])
+plt.plot(turn_number,r_g, color= "green")
+plt.plot(turn_number,death_cell, color= "Brown")
+
+plt.legend(['S','I', 'R','D'])
 plt.show()
